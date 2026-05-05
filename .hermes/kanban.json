@@ -1,0 +1,35 @@
+{
+  "project": "vision-text-engine",
+  "version": "0.1.0",
+  "created": "2026-05-05T05:45:00-03:00",
+  "columns": [
+    {
+      "name": "Backlog",
+      "items": [
+        {"id": "vte-py01", "title": "Publicação no PyPI (v0.2.0)", "desc": "Twine build, token PyPI, publish workflow", "priority": "high"},
+        {"id": "vte-cov01", "title": "Coverage >95%", "desc": "Levar cobertura para >=95% (atual 99% — manter)", "priority": "medium"},
+        {"id": "vte-doc01", "title": "Documentação de API no Sphinx", "desc": "Gerar docs automáticas com Sphinx + ReadTheDocs", "priority": "low"},
+        {"id": "vte-cli01", "title": "Comando vte serve (modo HTTP)", "desc": "Servidor Fastify-style para OCR via HTTP POST", "priority": "medium"},
+        {"id": "vte-fmt01", "title": "Suporte a mais formatos de imagem", "desc": "HEIC, WEBP, BMP, PDF (Pdf2Image)", "priority": "low"},
+        {"id": "vte-lang01", "title": "Detecção automática de idioma", "desc": "Usar langdetect para detectar idioma da imagem antes do OCR", "priority": "low"},
+        {"id": "vte-perf01", "title": "Benchmark de performance", "desc": "Script de benchmark para comparar backends EasyOCR vs Tesseract", "priority": "low"}
+      ]
+    },
+    {
+      "name": "Em andamento",
+      "items": [
+        {"id": "vte-ci01", "title": "CI verde em todas as matrizes", "desc": "Garantir que GitHub Actions passe em 3.10/3.11/3.12/3.13", "priority": "high"}
+      ]
+    },
+    {
+      "name": "Concluído",
+      "items": [
+        {"id": "vte-v01", "title": "v0.1.0 — Motor OCR funcional", "desc": "Pipeline preprocessing → OCR (EasyOCR) → filtragem inteligente", "priority": "high"},
+        {"id": "vte-tst01", "title": "204 testes, 99% coverage", "desc": "Testes unitários + integração + CLI, ruff/mypy 0", "priority": "high"},
+        {"id": "vte-gh01", "title": "GitHub: repo, CI, tag v0.1.0", "desc": "Repositório público, CI/CD configurado, tag criada", "priority": "high"},
+        {"id": "vte-doc02", "title": "Docs: README, AGENTS, CHANGELOG, ROADMAP", "desc": "Documentação completa do projeto", "priority": "high"},
+        {"id": "vte-cor01", "title": "7 testes corrigidos (recursão + CLI)", "desc": "Import recursion + batch JSON + global options + type ignore", "priority": "high"}
+      ]
+    }
+  ]
+}

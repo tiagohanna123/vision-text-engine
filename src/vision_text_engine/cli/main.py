@@ -16,7 +16,7 @@ import sys
 try:
     import click
 except ImportError:
-    click = None
+    click = None  # type: ignore[assignment]
 
 
 def create_cli() -> "click.Group | None":

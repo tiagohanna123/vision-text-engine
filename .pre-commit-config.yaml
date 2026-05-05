@@ -10,7 +10,7 @@ repos:
     rev: v1.15.0
     hooks:
       - id: mypy
-        args: [--strict, --ignore-missing-imports]
+        args: [--strict, --ignore-missing-imports, --no-warn-unused-ignores]
         additional_dependencies: [types-Pillow]
         exclude: ^tests/
 
