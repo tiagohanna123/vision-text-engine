@@ -2515,7 +2515,7 @@ wheels = [
 
 [[package]]
 name = "vision-text-engine"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "easyocr" },
@@ -2527,23 +2527,27 @@ dependencies = [
 
 [package.optional-dependencies]
 all = [
+    { name = "build" },
     { name = "click" },
     { name = "mypy" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
+    { name = "twine" },
 ]
 cli = [
     { name = "click" },
 ]
 dev = [
+    { name = "build" },
     { name = "click" },
     { name = "mypy" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
+    { name = "twine" },
 ]
 
 [package.dev-dependencies]
@@ -2554,6 +2558,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "build", marker = "extra == 'dev'", specifier = ">=1.5.0" },
     { name = "click", marker = "extra == 'cli'", specifier = ">=8.0" },
     { name = "click", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "easyocr", specifier = ">=1.7" },
@@ -2565,6 +2570,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1" },
+    { name = "twine", marker = "extra == 'dev'", specifier = ">=6.2.0" },
     { name = "vision-text-engine", extras = ["dev", "cli"], marker = "extra == 'all'" },
 ]
 provides-extras = ["dev", "cli", "all"]

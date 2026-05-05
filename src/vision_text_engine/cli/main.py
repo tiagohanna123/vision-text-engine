@@ -1,5 +1,5 @@
 """
-"""CLI do Vision Text Engine — uso interativo e scripting.
+CLI do Vision Text Engine — uso interativo e scripting.
 
 Comandos:
     vte extract <imagem>       Extrai texto de uma imagem
@@ -21,7 +21,7 @@ except ImportError:
     click = None  # type: ignore[assignment]
 
 
-def create_cli() -> "click.Group | None":
+def create_cli() -> click.Group | None:
     """Cria CLI com Click. Retorna None se click não estiver instalado."""
     if click is None:
         return None
