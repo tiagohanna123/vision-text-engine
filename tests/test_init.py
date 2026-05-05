@@ -48,7 +48,7 @@ class TestPackageInit:
     def test_version(self):
         """Package has a version string."""
         assert isinstance(__version__, str)
-        assert __version__ == "0.1.0"
+        assert __version__ == "0.2.0"
 
 
 class TestCoreInit:
