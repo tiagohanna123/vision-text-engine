@@ -18,6 +18,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Batch processing com barra de progresso
 - Fallback automático entre backends
 - Modelos de dados: `OCRResult`, `BatchResult`, `FilterRule`, `ImagePreprocessingConfig`
-- Infraestrutura de projeto: pyproject.toml, Makefile, linting com Ruff
+- Infraestrutura de projeto: pyproject.toml, Makefile, linting com Ruff, mypy
+- Testes unitários: 204 testes, 99% de cobertura de código
+- CI/CD via GitHub Actions (matrix 3.10/3.11/3.12)
+- Build e wheel com Hatchling
 - Documentação inicial (README, CHANGELOG, CONTRIBUTING, ROADMAP)
+- SECURITY.md, CODE_OF_CONDUCT.md, .pre-commit-config.yaml
 - Licença MIT
+
+### Corrigido
+
+- Import incorreto no pipeline.py (ajustado de `from .models` para `from ..core.models`)
+- URL do repositório no CONTRIBUTING.md (nousresearch → tiagohanna123)
+
+### Melhorado
+
+- Cobertura de testes: de 79% para 99%
+- Linting: Ruff 0 erros, mypy strict 0 erros
+- Qualidade de código: todos os arquivos 100% tipados

@@ -12,7 +12,7 @@ Obrigado por considerar contribuir! 🎉
 
 ```bash
 # Clone o repositório
-git clone https://github.com/nousresearch/vision-text-engine.git
+git clone https://github.com/tiagohanna123/vision-text-engine.git
 cd vision-text-engine
 
 # Crie um ambiente virtual
@@ -98,4 +98,4 @@ src/vision_text_engine/
     └── main.py          # CLI
 ```
 
-Dúvidas? Abra uma [issue](https://github.com/nousresearch/vision-text-engine/issues).
+Dúvidas? Abra uma [issue](https://github.com/tiagohanna123/vision-text-engine/issues).

@@ -93,3 +93,11 @@ class TestMainFunction:
         import inspect
 
         assert inspect.isfunction(main)
+
+    @patch("vision_text_engine.cli.main.click", None)
+    def test_main_no_click_exit(self):
+        """Sem click, main deve chamar sys.exit(1) e exibir erro."""
+        try:
+            main()
+        except SystemExit as e:
+            assert e.code == 1

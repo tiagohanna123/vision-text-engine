@@ -7,16 +7,16 @@ name = "vision-text-engine"
 version = "0.1.0"
 description = "Motor de extração inteligente de texto de imagens com pipeline preprocessing → OCR → filtragem"
 readme = "README.md"
+long_description_content_type = "text/markdown"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-    { name = "Vision Text Engine Contributors" },
+    { name = "Tiago Hanna", email = "tiago@tiagohanna.com" },
 ]
 keywords = ["ocr", "easyocr", "text-extraction", "image-processing", "computer-vision"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -116,3 +116,9 @@ ignore_errors = true
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-v --tb=short"
+
+[dependency-groups]
+dev = [
+    "build>=1.5.0",
+    "twine>=6.2.0",
+]

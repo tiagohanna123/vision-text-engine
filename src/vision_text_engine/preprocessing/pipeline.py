@@ -31,12 +31,12 @@ def preprocess_image(
 
     """
     if not _HAS_CV2:
-        return _load_image_fallback(image_path)  # type: ignore[no-any-return]
+        return _load_image_fallback(image_path)
 
     cfg = config or ImagePreprocessingConfig()
     img = cv2.imread(image_path)
     if img is None:
-        return _load_image_fallback(image_path)  # type: ignore[no-any-return]
+        return _load_image_fallback(image_path)
 
     # Grayscale
     if cfg.grayscale and len(img.shape) == 3:
@@ -70,7 +70,7 @@ def preprocess_image(
     return img
 
 
-def _load_image_fallback(image_path: str):
+def _load_image_fallback(image_path: str) -> "np.ndarray | None":
     """Fallback: carrega imagem sem processamento."""
     if not _HAS_CV2:
         return None

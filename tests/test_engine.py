@@ -5,6 +5,7 @@ error handling (file not found, reader not installed), preprocessing,
 and available_backends().
 """
 
+import sys
 from unittest.mock import MagicMock, patch
 
 from vision_text_engine.core.engine import VisionEngine
@@ -424,3 +425,114 @@ class TestAvailableBackends:
         backends = engine.available_backends()
         assert backends["easyocr"] is False
         assert backends["opencv"] is True
+
+
+class TestEngineImportFailures:
+    """Cobre os except blocks nos imports do módulo engine (linhas 19-20, 26-27)."""
+
+    def test_easyocr_import_error_triggers_except(self):
+        """O except (ImportError, RuntimeError) em engine.py linha 19-20 é executado
+        quando easyocr não pode ser importado."""
+        orig_modules = {}
+        for key in ("easyocr", "vision_text_engine.core.engine"):
+            if key in sys.modules:
+                orig_modules[key] = sys.modules[key]
+
+        try:
+            sys.modules.pop("easyocr", None)
+            sys.modules.pop("vision_text_engine.core.engine", None)
+
+            # None sentinel: Python levanta ImportError quando o módulo
+            # está em sys.modules com valor None (evita patch do __import__)
+            sys.modules["easyocr"] = None
+
+            import vision_text_engine.core.engine as eng
+
+            assert eng._HAS_EASYOCR is False
+        finally:
+            for key, mod in orig_modules.items():
+                sys.modules[key] = mod
+
+    def test_cv2_import_error_triggers_except(self):
+        """O except (ImportError, RuntimeError) em engine.py linha 26-27 é executado
+        quando cv2 não pode ser importado."""
+        orig_modules = {}
+        for key in ("cv2", "vision_text_engine.core.engine"):
+            if key in sys.modules:
+                orig_modules[key] = sys.modules[key]
+
+        try:
+            sys.modules.pop("cv2", None)
+            sys.modules.pop("vision_text_engine.core.engine", None)
+
+            # None sentinel: Python levanta ImportError quando o módulo
+            # está em sys.modules com valor None (evita patch do __import__)
+            sys.modules["cv2"] = None
+
+            import vision_text_engine.core.engine as eng
+
+            assert eng._HAS_CV2 is False
+        finally:
+            for key, mod in orig_modules.items():
+                sys.modules[key] = mod
+
+
+class TestEnsureReader:
+    """Cobre _ensure_reader com model_storage e download_enabled (linhas 66-72)."""
+
+    @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
+    @patch("vision_text_engine.core.engine.easyocr")
+    def test_ensure_reader_model_storage(self, mock_easyocr, sample_image_path):
+        """_ensure_reader passa model_storage_directory ao Reader."""
+        mock_reader = MagicMock()
+        mock_reader.readtext.return_value = ["text"]
+        mock_easyocr.Reader.return_value = mock_reader
+
+        engine = VisionEngine(
+            model_storage_directory="/tmp/custom_models",
+            download_enabled=False,
+        )
+        result = engine.extract(image_path=sample_image_path, preprocess=False)
+        assert result.success is True
+        mock_easyocr.Reader.assert_called_once_with(
+            ["pt", "en"],
+            gpu=False,
+            model_storage_directory="/tmp/custom_models",
+            download_enabled=False,
+        )
+
+    @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
+    @patch("vision_text_engine.core.engine.easyocr")
+    def test_ensure_reader_download_disabled(self, mock_easyocr, sample_image_path):
+        """_ensure_reader passa download_enabled=False ao Reader."""
+        mock_reader = MagicMock()
+        mock_reader.readtext.return_value = ["text"]
+        mock_easyocr.Reader.return_value = mock_reader
+
+        engine = VisionEngine(download_enabled=False)
+        result = engine.extract(image_path=sample_image_path, preprocess=False)
+        assert result.success is True
+        mock_easyocr.Reader.assert_called_once_with(
+            ["pt", "en"],
+            gpu=False,
+            download_enabled=False,
+        )
+
+    @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
+    @patch("vision_text_engine.core.engine.easyocr")
+    def test_ensure_reader_model_storage_only(self, mock_easyocr, sample_image_path):
+        """_ensure_reader com model_storage_directory mas download habilitado."""
+        mock_reader = MagicMock()
+        mock_reader.readtext.return_value = ["text"]
+        mock_easyocr.Reader.return_value = mock_reader
+
+        engine = VisionEngine(model_storage_directory="/tmp/models")
+        result = engine.extract(image_path=sample_image_path, preprocess=False)
+        assert result.success is True
+        mock_easyocr.Reader.assert_called_once_with(
+            ["pt", "en"],
+            gpu=False,
+            model_storage_directory="/tmp/models",
+        )
+        kwargs = mock_easyocr.Reader.call_args[1]
+        assert "download_enabled" not in kwargs

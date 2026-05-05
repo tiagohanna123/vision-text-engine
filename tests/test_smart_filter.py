@@ -285,3 +285,42 @@ class TestDefaultFilterRules:
         rules = default_filter_rules()
         for rule in rules:
             assert rule.exclude_keywords
+
+
+class TestMatchesRule:
+    """Testes para _matches_rule — cobre linhas 191 e 203."""
+
+    def test_matches_rule_min_length_edge(self):
+        """_matches_rule retorna False quando len(text) < rule.min_length
+        mas len(text) > 2 (não pego pelo _is_noise). Linha 191."""
+        from vision_text_engine.core.models import FilterRule
+        from vision_text_engine.filters.smart_filter import _matches_rule
+
+        # Texto "abc" (len=3) com min_length=10 → deve falhar no length check
+        rule = FilterRule(name="test", min_length=10, max_length=100)
+        result = _matches_rule("abc", rule)
+        assert result is False
+
+    def test_matches_rule_require_handle_format(self):
+        """_matches_rule com require_handle_format=True valida formato @user.
+        Linha 203."""
+        from vision_text_engine.core.models import FilterRule
+        from vision_text_engine.filters.smart_filter import _matches_rule
+
+        rule = FilterRule(
+            name="test",
+            min_length=3,
+            max_length=50,
+            require_handle_format=True,
+        )
+
+        # Formato inválido (tem espaço)
+        assert _matches_rule("@user name", rule) is False
+        # Formato inválido (caractere especial)
+        assert _matches_rule("@user!name", rule) is False
+        # Formato válido
+        assert _matches_rule("@username", rule) is True
+        # Formato válido sem @ (o regex aceita @? opcional)
+        assert _matches_rule("username", rule) is True
+        # Muito curto (len < min_length)
+        assert _matches_rule("@a", rule) is False

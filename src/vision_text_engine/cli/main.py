@@ -16,7 +16,7 @@ import sys
 try:
     import click
 except ImportError:
-    click = None  # type: ignore
+    click = None  # type: ignore[assignment]
 
 
 def create_cli() -> "click.Group | None":
@@ -108,8 +108,6 @@ def create_cli() -> "click.Group | None":
             print(f"Nenhuma imagem encontrada: {pattern}", file=sys.stderr)
             sys.exit(1)
 
-        print(f"Processando {len(files)} imagens...")
-
         batch_result = extract_text_batch(
             image_paths=files,
             lang=ctx.obj["lang"],
@@ -141,6 +139,7 @@ def create_cli() -> "click.Group | None":
                 )
             )
         else:
+            print(f"Processando {len(files)} imagens...")
             print(
                 f"\n✅ {batch_result.successful}/{batch_result.total_images} "
                 f"({batch_result.success_rate:.0f}%) | "

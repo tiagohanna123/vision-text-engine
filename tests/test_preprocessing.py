@@ -4,6 +4,7 @@ Tests preprocess_image() with mocked cv2 and without cv2 (fallback).
 Uses unittest.mock to avoid needing real opencv-python.
 """
 
+import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -338,3 +339,31 @@ class TestPreprocessImageEdgeCases:
             mock_cv2.imread.side_effect = RuntimeError("CV2 error")
             with pytest.raises(RuntimeError):
                 preprocess_image(sample_image_path)
+
+
+class TestPipelineImportError:
+    """Cobre o except ImportError no módulo pipeline.py (linhas 14-15)."""
+
+    def test_pipeline_import_error_cover(self):
+        """Força o import de cv2/numpy a falhar para cobrir linhas 14-15."""
+        orig_modules = {}
+        for key in ("cv2", "numpy", "vision_text_engine.preprocessing.pipeline"):
+            if key in sys.modules:
+                orig_modules[key] = sys.modules[key]
+
+        try:
+            sys.modules.pop("cv2", None)
+            sys.modules.pop("numpy", None)
+            sys.modules.pop("vision_text_engine.preprocessing.pipeline", None)
+
+            # None sentinel: Python levanta ImportError quando o módulo
+            # está em sys.modules com valor None (evita patch do __import__)
+            sys.modules["cv2"] = None
+            sys.modules["numpy"] = None
+
+            import vision_text_engine.preprocessing.pipeline as pip_mod
+
+            assert pip_mod._HAS_CV2 is False
+        finally:
+            for key, mod in orig_modules.items():
+                sys.modules[key] = mod
