@@ -38,7 +38,6 @@
 - [ ] Suporte a GPU otimizado
 - [ ] Quantização de modelo para inferência mais rápida
 - [ ] Benchmark suite
-- [ ] CLI com rich (saída colorida, tabelas)
 
 ## v1.0.0 — Produção
 

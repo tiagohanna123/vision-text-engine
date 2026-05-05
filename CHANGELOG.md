@@ -20,7 +20,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Modelos de dados: `OCRResult`, `BatchResult`, `FilterRule`, `ImagePreprocessingConfig`
 - Infraestrutura de projeto: pyproject.toml, Makefile, linting com Ruff, mypy
 - Testes unitários: 204 testes, 99% de cobertura de código
-- CI/CD via GitHub Actions (matrix 3.10/3.11/3.12)
+- CI/CD via GitHub Actions (matrix 3.10/3.11/3.12/3.13)
 - Build e wheel com Hatchling
 - Documentação inicial (README, CHANGELOG, CONTRIBUTING, ROADMAP)
 - SECURITY.md, CODE_OF_CONDUCT.md, .pre-commit-config.yaml
@@ -30,6 +30,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Import incorreto no pipeline.py (ajustado de `from .models` para `from ..core.models`)
 - URL do repositório no CONTRIBUTING.md (nousresearch → tiagohanna123)
+- 7 testes corrigidos após auditoria de documentação (remoção de `confidence_scores` obsoleto, alinhamento de exemplos CLI/API com a implementação real)
 
 ### Melhorado
 

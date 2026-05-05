@@ -15,12 +15,13 @@ Obrigado por considerar contribuir! 🎉
 git clone https://github.com/tiagohanna123/vision-text-engine.git
 cd vision-text-engine
 
-# Crie um ambiente virtual
+# Opção 1: Com uv (recomendado)
+uv sync
+
+# Opção 2: Com venv + pip
 python -m venv .venv
 source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate   # Windows
-
-# Instale dependências de desenvolvimento
 make install-all
 ```
 
@@ -95,6 +96,7 @@ src/vision_text_engine/
 ├── filters/
 │   └── smart_filter.py  # Filtros inteligentes
 └── cli/
+    ├── __init__.py      # Inicialização do pacote CLI
     └── main.py          # CLI
 ```
 

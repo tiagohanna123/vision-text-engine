@@ -7,11 +7,14 @@
 **Motor de extração inteligente de texto de imagens**
 
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://python.org)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Code style](https://img.shields.io/badge/code%20style-ruff-633f8b)](https://github.com/astral-sh/ruff)
-[![Hatchling](https://img.shields.io/badge/build-hatchling-9cf)](https://hatch.pypa.io/)
-[![Made by Tiago Hanna](https://img.shields.io/badge/made%20by-Tiago%20Hanna-8A2BE2)](https://tiagohanna.com)
+|[![Version](https://img.shields.io/badge/version-0.1.0-8A2BE2)](https://github.com/tiagohanna123/vision-text-engine)
+|[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+|[![CI](https://github.com/tiagohanna123/vision-text-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/tiagohanna123/vision-text-engine/actions/workflows/ci.yml)
+|[![Coverage](https://img.shields.io/badge/coverage-99%25-success)](https://github.com/tiagohanna123/vision-text-engine)
+|[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+|[![Code style](https://img.shields.io/badge/code%20style-ruff-633f8b)](https://github.com/astral-sh/ruff)
+|[![Hatchling](https://img.shields.io/badge/build-hatchling-9cf)](https://hatch.pypa.io/)
+|[![Made by Tiago Hanna](https://img.shields.io/badge/made%20by-Tiago%20Hanna-8A2BE2)](https://tiagohanna.com)
 
 </div>
 
@@ -32,22 +35,20 @@
 
 ## 🚀 Instalação
 
-```bash
-# Instalação básica (sem CLI)
-pip install vision-text-engine
-
-# Com suporte a CLI (click)
-pip install "vision-text-engine[cli]"
-
-# Desenvolvimento completo
-pip install "vision-text-engine[all]"
-```
-
-### Desenvolvimento local
+> ⚠️ **Ainda não publicado no PyPI.** Use o desenvolvimento local:
 
 ```bash
+# Clone o repositório
 git clone https://github.com/tiagohanna123/vision-text-engine.git
 cd vision-text-engine
+
+# Com uv (recomendado)
+uv sync
+uv run vte --help
+
+# Ou com pip
+python -m venv .venv
+source .venv/bin/activate
 make install-dev
 ```
 
@@ -64,11 +65,11 @@ from vision_text_engine import extract_text, extract_text_batch, VisionEngine
 result = extract_text("foto.jpg")
 print(result.text)           # Texto filtrado
 print(result.raw_text)       # Texto bruto
-print(result.confidence_scores)
+print(result.success)        # True/False
 
 # Extrair de múltiplas imagens
 batch = extract_text_batch(["img1.jpg", "img2.png"])
-print(f"Processadas: {batch.successful}/{batch.total_images}")
+print(f"Processadas: {len(batch)} imagens")
 
 # --- Classe VisionEngine (controle fino) ---
 
@@ -124,16 +125,17 @@ Veja o diretório [`examples/`](examples/) para exemplos completos:
 src/vision_text_engine/
 ├── __init__.py          # Entry point, exports públicos
 ├── api.py               # Funções de alto nível (extract_text, extract_text_batch)
-├── __main__.py          # python -m vision_text_engine
+├── __main__.py          # Entry point para python -m
 ├── core/
 │   ├── engine.py        # VisionEngine — motor OCR principal
-│   └── models.py        # OCRResult, BatchResult, FilterRule, Config
+│   └── models.py        # ExtractionResult, FilterRule, Config
 ├── preprocessing/
 │   └── pipeline.py      # Pipeline de pré-processamento de imagem
 ├── filters/
 │   └── smart_filter.py  # Filtragem inteligente (handles, hashtags, urls)
 └── cli/
-    └── main.py          # CLI com Click
+    ├── __init__.py      # Inicialização do pacote CLI
+    └── main.py          # CLI com Click (vte extract, batch, info)
 ```
 
 ## 🔧 Stack
