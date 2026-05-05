@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vision-text-engine"
-version = "0.1.0"
+version = "0.2.0"
 description = "Motor de extração inteligente de texto de imagens com pipeline preprocessing → OCR → filtragem"
 readme = "README.md"
 long_description_content_type = "text/markdown"
@@ -109,10 +109,6 @@ disable_error_code = "no-untyped-def"
 [[tool.mypy.overrides]]
 module = ["easyocr", "cv2", "numpy", "PIL", "click"]
 ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["tests"]
-ignore_errors = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

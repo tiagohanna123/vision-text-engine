@@ -7,7 +7,7 @@
 **Motor de extração inteligente de texto de imagens**
 
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://python.org)
-|[![Version](https://img.shields.io/badge/version-0.1.0-8A2BE2)](https://github.com/tiagohanna123/vision-text-engine)
+|[![Version](https://img.shields.io/badge/version-0.2.0-8A2BE2)](https://github.com/tiagohanna123/vision-text-engine)
 |[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 |[![CI](https://github.com/tiagohanna123/vision-text-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/tiagohanna123/vision-text-engine/actions/workflows/ci.yml)
 |[![Coverage](https://img.shields.io/badge/coverage-99%25-success)](https://github.com/tiagohanna123/vision-text-engine)

@@ -13,7 +13,7 @@ Imagem → Pré-processamento → OCR (EasyOCR) → Filtragem Inteligente → Te
 - **Filtragem**: Regras configuráveis (min_length, handles, regex, noise)
 - **CLI**: Click com comandos `extract`, `batch`, `info`
 - **API pública**: `extract_text()`, `extract_text_batch()`
-- **Versão**: 0.1.0 (Alpha)
+- **Versão**: 0.2.0 (Alpha)
 - **Testes**: 204 testes unitários, 99% de cobertura de código
 - **Linting**: Ruff 0 erros, mypy strict 0 erros
 

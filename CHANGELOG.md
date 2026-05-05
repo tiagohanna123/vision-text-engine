@@ -5,6 +5,12 @@ Todas as mudanças significativas neste projeto serão documentadas neste arquiv
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-05-05
+
+### Adicionado
+
+- Version bump: v0.1.0 → v0.2.0 (consistente em todos os arquivos do projeto)
+
 ## [0.1.0] - 2026-05-05
 
 ### Adicionado

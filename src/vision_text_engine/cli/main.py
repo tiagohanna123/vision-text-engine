@@ -1,5 +1,5 @@
 """
-CLI do Vision Text Engine — uso interativo e scripting.
+"""CLI do Vision Text Engine — uso interativo e scripting.
 
 Comandos:
     vte extract <imagem>       Extrai texto de uma imagem
@@ -7,6 +7,8 @@ Comandos:
     vte info                   Info do engine e backends
     vte serve                  Modo servidor HTTP (futuro)
 """
+
+from __future__ import annotations
 
 import glob
 import json

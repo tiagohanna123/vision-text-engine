@@ -5,7 +5,7 @@ Pipeline completo: preprocessing → OCR → filtragem inteligente.
 Múltiplos backends: EasyOCR (primário), Tesseract (fallback), API (fallback final).
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 # Lazy imports — easyocr/torchvision têm dependências pesadas
 # que podem causar crash (CUDA mismatch). Importar apenas quando usado.
