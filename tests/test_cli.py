@@ -14,30 +14,36 @@ class TestCLIStructure:
 
     def test_cli_has_extract_command(self):
         cli = create_cli()
+        assert cli is not None
         commands = list(cli.commands.keys())
         assert "extract" in commands
 
     def test_cli_has_batch_command(self):
         cli = create_cli()
+        assert cli is not None
         commands = list(cli.commands.keys())
         assert "batch" in commands
 
     def test_cli_has_info_command(self):
         cli = create_cli()
+        assert cli is not None
         commands = list(cli.commands.keys())
         assert "info" in commands
 
     @patch("click.Path", return_value=lambda: None)
     def test_extract_command_has_image_arg(self, mock_path):
         cli = create_cli()
-        cmd = cli.get_command(None, "extract")
+        assert cli is not None
+        cmd = cli.get_command(None, "extract")  # type: ignore[arg-type]
         assert cmd is not None
         params = [p.name for p in cmd.params]
         assert "image_path" in params
 
     def test_extract_command_has_options(self):
         cli = create_cli()
-        cmd = cli.get_command(None, "extract")
+        assert cli is not None
+        cmd = cli.get_command(None, "extract")  # type: ignore[arg-type]
+        assert cmd is not None
         params = [p.name for p in cmd.params]
         assert "json_output" in params
         assert "handles" in params
@@ -45,14 +51,17 @@ class TestCLIStructure:
 
     def test_batch_command_has_pattern_arg(self):
         cli = create_cli()
-        cmd = cli.get_command(None, "batch")
+        assert cli is not None
+        cmd = cli.get_command(None, "batch")  # type: ignore[arg-type]
         assert cmd is not None
         params = [p.name for p in cmd.params]
         assert "pattern" in params
 
     def test_batch_command_has_options(self):
         cli = create_cli()
-        cmd = cli.get_command(None, "batch")
+        assert cli is not None
+        cmd = cli.get_command(None, "batch")  # type: ignore[arg-type]
+        assert cmd is not None
         params = [p.name for p in cmd.params]
         assert "json_output" in params
         assert "recursive" in params
@@ -60,6 +69,7 @@ class TestCLIStructure:
 
     def test_cli_has_global_options(self):
         cli = create_cli()
+        assert cli is not None
         params = [p.name for p in cli.params]
         assert "lang" in params
         assert "gpu" in params
@@ -72,7 +82,8 @@ class TestCLIInfo:
     def test_info_uses_engine(self):
         """Info deve verificar backends."""
         cli = create_cli()
-        cmd = cli.get_command(None, "info")
+        assert cli is not None
+        cmd = cli.get_command(None, "info")  # type: ignore[arg-type]
         assert cmd is not None
         assert cmd.callback is not None
 

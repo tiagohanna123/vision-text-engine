@@ -10,7 +10,7 @@ class TestPackageGetattr:
         """Acessar VisionEngine via __getattr__."""
         import vision_text_engine
 
-        engine_cls = vision_text_engine.__getattr__("VisionEngine")
+        engine_cls = vision_text_engine.__getattr__("VisionEngine")  # type: ignore[no-untyped-call]
         from vision_text_engine.core.engine import VisionEngine as Real
 
         assert engine_cls is Real
@@ -19,7 +19,7 @@ class TestPackageGetattr:
         """Acessar extract_text via __getattr__."""
         import vision_text_engine
 
-        fn = vision_text_engine.__getattr__("extract_text")
+        fn = vision_text_engine.__getattr__("extract_text")  # type: ignore[no-untyped-call]
         from vision_text_engine.api import extract_text as real
 
         assert fn is real
@@ -28,7 +28,7 @@ class TestPackageGetattr:
         """Acessar extract_text_batch via __getattr__."""
         import vision_text_engine
 
-        fn = vision_text_engine.__getattr__("extract_text_batch")
+        fn = vision_text_engine.__getattr__("extract_text_batch")  # type: ignore[no-untyped-call]
         from vision_text_engine.api import extract_text_batch as real
 
         assert fn is real
@@ -38,4 +38,4 @@ class TestPackageGetattr:
         import vision_text_engine
 
         with pytest.raises(AttributeError, match="has no attribute"):
-            vision_text_engine.__getattr__("unknown_attr")
+            vision_text_engine.__getattr__("unknown_attr")  # type: ignore[no-untyped-call]

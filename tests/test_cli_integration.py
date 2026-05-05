@@ -21,7 +21,9 @@ class TestCLIIntegration:
 
     def setup_method(self):
         self.runner = CliRunner()
-        self.cli = create_cli()
+        cli = create_cli()
+        assert cli is not None
+        self.cli = cli
 
     # ── info command (linhas 158-168) ─────────────────────────────────────
 

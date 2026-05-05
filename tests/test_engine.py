@@ -68,6 +68,7 @@ class TestExtract:
         engine = VisionEngine()
         result = engine.extract(image_path="/nonexistent/file.png")
         assert result.success is False
+        assert result.error is not None
         assert "Arquivo não encontrado" in result.error
         assert result.file_path == "/nonexistent/file.png"
         assert result.total_time >= 0
@@ -78,6 +79,7 @@ class TestExtract:
         engine = VisionEngine()
         result = engine.extract(image_path=sample_image_path)
         assert result.success is False
+        assert result.error is not None
         assert "EasyOCR não está instalado" in result.error
 
     @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
@@ -153,6 +155,7 @@ class TestExtract:
 
         result = engine.extract(image_path=sample_image_path, preprocess=False)
         assert result.success is False
+        assert result.error is not None
         assert "Erro no OCR" in result.error
 
     @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
@@ -237,6 +240,7 @@ class TestExtract:
 
         result = engine.extract(image_path=sample_image_path, preprocess=True)
         assert result.success is False
+        assert result.error is not None
         assert "Erro no pré-processamento" in result.error
 
     @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
@@ -444,7 +448,7 @@ class TestEngineImportFailures:
 
             # None sentinel: Python levanta ImportError quando o módulo
             # está em sys.modules com valor None (evita patch do __import__)
-            sys.modules["easyocr"] = None
+            sys.modules["easyocr"] = None  # type: ignore[assignment]
 
             import vision_text_engine.core.engine as eng
 
@@ -467,7 +471,7 @@ class TestEngineImportFailures:
 
             # None sentinel: Python levanta ImportError quando o módulo
             # está em sys.modules com valor None (evita patch do __import__)
-            sys.modules["cv2"] = None
+            sys.modules["cv2"] = None  # type: ignore[assignment]
 
             import vision_text_engine.core.engine as eng
 

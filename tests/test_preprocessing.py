@@ -358,8 +358,8 @@ class TestPipelineImportError:
 
             # None sentinel: Python levanta ImportError quando o módulo
             # está em sys.modules com valor None (evita patch do __import__)
-            sys.modules["cv2"] = None
-            sys.modules["numpy"] = None
+            sys.modules["cv2"] = None  # type: ignore[assignment]
+            sys.modules["numpy"] = None  # type: ignore[assignment]
 
             import vision_text_engine.preprocessing.pipeline as pip_mod
 

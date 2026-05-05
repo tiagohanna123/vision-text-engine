@@ -5,6 +5,16 @@ Todas as mudanças significativas neste projeto serão documentadas neste arquiv
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-05-05
+
+### Corrigido
+
+- Versão do CLI (`vte info`) agora lê dinamicamente de `__version__` — antes estava hardcoded como v0.1.0
+- MyPy strict 0 erros: asserts de narrowing para `click.Group | None` e `str | None` nos testes
+- MyPy strict 0 erros: `# type: ignore[assignment]` para `sys.modules["x"] = None` em testes de lazy import
+- MyPy strict 0 erros: `# type: ignore[no-untyped-call]` para `__getattr__` em testes de lazy import
+- CI agora roda mypy com `--no-warn-unused-ignores` (compatível com as correções)
+
 ## [0.2.0] - 2026-05-05
 
 ### Adicionado

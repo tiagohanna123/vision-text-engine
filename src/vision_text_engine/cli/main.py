@@ -15,6 +15,8 @@ import json
 import os
 import sys
 
+from vision_text_engine import __version__
+
 try:
     import click
 except ImportError:
@@ -160,7 +162,7 @@ def create_cli() -> click.Group | None:
 
         engine = VisionEngine(lang=ctx.obj["lang"], gpu=ctx.obj["gpu"])
         backends = engine.available_backends()
-        print("Vision Text Engine v0.1.0")
+        print(f"Vision Text Engine v{__version__}")
         print(f"Idiomas: {', '.join(ctx.obj['lang'])}")
         print(f"GPU: {'sim' if ctx.obj['gpu'] else 'não'}")
         print(f"Pré-processamento: {'sim' if ctx.obj['preprocess'] else 'não'}")

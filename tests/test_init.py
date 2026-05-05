@@ -43,7 +43,7 @@ class TestPackageInit:
         import pytest
 
         with pytest.raises(AttributeError):
-            __getattr__("NonExistentThing")
+            __getattr__("NonExistentThing")  # type: ignore[no-untyped-call]
 
     def test_version(self):
         """Package has a version string."""
@@ -82,7 +82,7 @@ class TestCoreInit:
         from vision_text_engine.core import __getattr__ as core_getattr
 
         with pytest.raises(AttributeError):
-            core_getattr("NonExistentThing")
+            core_getattr("NonExistentThing")  # type: ignore[no-untyped-call]
 
 
 class TestMainModule:

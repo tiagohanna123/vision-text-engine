@@ -75,6 +75,7 @@ class TestExtractText:
 
         result = extract_text("missing.png")
         assert result.success is False
+        assert result.error is not None
         assert "Arquivo não encontrado" in result.error
 
 
