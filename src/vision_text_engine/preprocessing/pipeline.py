@@ -18,7 +18,7 @@ except ImportError:
 def preprocess_image(
     image_path: str,
     config: ImagePreprocessingConfig | None = None,
-) -> "np.ndarray | None":
+) -> "np.ndarray | None":  # type: ignore[type-arg]
     """
     Pré-processa uma imagem para melhorar qualidade OCR.
 
@@ -70,7 +70,7 @@ def preprocess_image(
     return img
 
 
-def _load_image_fallback(image_path: str) -> "np.ndarray | None":
+def _load_image_fallback(image_path: str) -> "np.ndarray | None":  # type: ignore[type-arg]
     """Fallback: carrega imagem sem processamento."""
     if not _HAS_CV2:
         return None
