@@ -40,6 +40,8 @@ dev = [
     "click>=8.0",
     "mypy>=1.0",
     "pre-commit>=3.0",
+    "build>=1.5.0",
+    "twine>=6.2.0",
 ]
 cli = [
     "click>=8.0",
