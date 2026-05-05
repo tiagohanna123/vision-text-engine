@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+*.tar.gz
+MANIFEST
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing & Coverage
+.coverage
+coverage/
+htmlcov/
+.pytest_cache/
+.cache/
+*.cover
+
+# Type checking
+.mypy_cache/
+.typing/
+*.pyi
+
+# Ruff
+.ruff_cache/
+
+# Logs
+*.log
+logs/
+
+# Project specific
+data/
+output/
+downloads/
+models/
+
+# OS
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,113 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vision-text-engine"
+version = "0.1.0"
+description = "Motor de extração inteligente de texto de imagens com pipeline preprocessing → OCR → filtragem"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Vision Text Engine Contributors" },
+]
+keywords = ["ocr", "easyocr", "text-extraction", "image-processing", "computer-vision"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Topic :: Text Processing :: General",
+]
+
+dependencies = [
+    "easyocr>=1.7",
+    "opencv-python>=4.8",
+    "numpy>=1.24",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1",
+    "click>=8.0",
+    "mypy>=1.0",
+    "pre-commit>=3.0",
+]
+cli = [
+    "click>=8.0",
+]
+all = [
+    "vision-text-engine[dev,cli]",
+]
+
+[project.urls]
+Homepage = "https://github.com/tiagohanna123/vision-text-engine"
+Repository = "https://github.com/tiagohanna123/vision-text-engine"
+Documentation = "https://github.com/tiagohanna123/vision-text-engine"
+
+[project.scripts]
+vte = "vision_text_engine.cli.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vision_text_engine"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "N",  # pep8-naming
+    "D",  # pydocstyle
+    "UP",  # pyupgrade
+    "B",  # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff-specific rules
+]
+ignore = [
+    "D100",  # Missing docstring in public module
+    "D104",  # Missing docstring in public package
+    "D107",  # Missing docstring in __init__
+    "D203",  # 1 blank line required before class docstring
+    "D212",  # Multi-line docstring summary should start at first line
+    "D401",  # First line should be in imperative mood
+    "E501",  # Line too long (handled by line-length setting)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "I002"]
+"tests/*.py" = ["D", "N803", "F841"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+allow_untyped_defs = false
+warn_unused_ignores = true
+warn_redundant_casts = true
+
+[[tool.mypy.overrides]]
+module = ["easyocr", "cv2", "numpy", "PIL"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
