@@ -4,7 +4,6 @@ Tests OCRResult, BatchResult, FilterRule, ImagePreprocessingConfig
 including properties, edge cases, and empty data scenarios.
 """
 
-
 import pytest
 
 from vision_text_engine.core.models import (

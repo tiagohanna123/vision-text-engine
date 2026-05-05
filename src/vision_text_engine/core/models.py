@@ -44,7 +44,7 @@ class BatchResult:
 
     @property
     def success_rate(self) -> float:
-        """Percentage of successful images (0.0–100.0)."""
+        """Percentage of successful images (0.0-100.0)."""
         if self.total_images == 0:
             return 0.0
         return self.successful / self.total_images * 100

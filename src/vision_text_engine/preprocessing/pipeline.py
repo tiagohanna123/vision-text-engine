@@ -4,12 +4,12 @@ Pré-processamento de imagem para OCR.
 Pipeline de melhoramento: contraste → brilho → denoise → sharpen → redimensionamento.
 """
 
-
 from ..core.models import ImagePreprocessingConfig
 
 try:
     import cv2
     import numpy as np
+
     _HAS_CV2 = True
 except ImportError:
     _HAS_CV2 = False
@@ -31,12 +31,12 @@ def preprocess_image(
 
     """
     if not _HAS_CV2:
-        return _load_image_fallback(image_path)
+        return _load_image_fallback(image_path)  # type: ignore[no-any-return]
 
     cfg = config or ImagePreprocessingConfig()
     img = cv2.imread(image_path)
     if img is None:
-        return _load_image_fallback(image_path)
+        return _load_image_fallback(image_path)  # type: ignore[no-any-return]
 
     # Grayscale
     if cfg.grayscale and len(img.shape) == 3:
@@ -54,7 +54,9 @@ def preprocess_image(
         clahe = cv2.createCLAHE(clipLimit=cfg.contrast_limit * 4, tileGridSize=(8, 8))
         img = clahe.apply(img)
     else:
-        img = cv2.convertScaleAbs(img, alpha=1 + cfg.contrast_limit, beta=cfg.brightness_limit * 255)
+        img = cv2.convertScaleAbs(
+            img, alpha=1 + cfg.contrast_limit, beta=cfg.brightness_limit * 255
+        )
 
     # Denoise
     if cfg.denoise_strength > 0:

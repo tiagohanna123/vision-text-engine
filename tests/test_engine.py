@@ -5,7 +5,6 @@ error handling (file not found, reader not installed), preprocessing,
 and available_backends().
 """
 
-
 from unittest.mock import MagicMock, patch
 
 from vision_text_engine.core.engine import VisionEngine
@@ -196,14 +195,12 @@ class TestExtract:
         engine._reader = mock_reader
         engine._initialized = True
 
-        # Patch the pipeline import — o import ocorre dentro do método extract()
+        # Patch the pipeline import inside extract()
         with patch(
             "vision_text_engine.preprocessing.pipeline.preprocess_image",
         ) as mock_preprocess:
             mock_preprocess.return_value = "processed_img_array"
-            result = engine.extract(
-                image_path=sample_image_path, detail=0, preprocess=True
-            )
+            result = engine.extract(image_path=sample_image_path, detail=0, preprocess=True)
             assert result.success is True
             mock_preprocess.assert_called_once()
             assert result.raw_texts == ["preprocessed text"]
@@ -254,9 +251,7 @@ class TestExtract:
         result = engine.extract(image_path=sample_image_path, detail=0, preprocess=False)
         assert result.success is True
         # When preprocess=False, the path string is passed as-is
-        mock_reader.readtext.assert_called_with(
-            sample_image_path, detail=0, paragraph=False
-        )
+        mock_reader.readtext.assert_called_with(sample_image_path, detail=0, paragraph=False)
 
     @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
     def test_paragraph_parameter(self, sample_image_path):
@@ -272,9 +267,7 @@ class TestExtract:
             image_path=sample_image_path, detail=0, paragraph=True, preprocess=False
         )
         assert result.success is True
-        mock_reader.readtext.assert_called_with(
-            sample_image_path, detail=0, paragraph=True
-        )
+        mock_reader.readtext.assert_called_with(sample_image_path, detail=0, paragraph=True)
 
     @patch("vision_text_engine.core.engine._HAS_EASYOCR", True)
     def test_consecutive_calls(self, sample_image_path, another_image_path):
@@ -289,12 +282,8 @@ class TestExtract:
         engine._reader = mock_reader
         engine._initialized = True
 
-        r1 = engine.extract(
-            image_path=sample_image_path, detail=0, preprocess=False
-        )
-        r2 = engine.extract(
-            image_path=another_image_path, detail=0, preprocess=False
-        )
+        r1 = engine.extract(image_path=sample_image_path, detail=0, preprocess=False)
+        r2 = engine.extract(image_path=another_image_path, detail=0, preprocess=False)
 
         assert r1.success is True
         assert r1.raw_texts == ["first image text"]
@@ -367,9 +356,7 @@ class TestExtractBatch:
         engine._reader = MagicMock()
         engine._initialized = True
 
-        batch = engine.extract_batch(
-            image_paths=[], preprocess=False, show_progress=False
-        )
+        batch = engine.extract_batch(image_paths=[], preprocess=False, show_progress=False)
 
         assert batch.total_images == 0
         assert batch.successful == 0

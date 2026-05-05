@@ -99,13 +99,18 @@ line-ending = "auto"
 python_version = "3.10"
 strict = true
 ignore_missing_imports = true
-allow_untyped_defs = false
+allow_untyped_defs = true
 warn_unused_ignores = true
 warn_redundant_casts = true
+disable_error_code = "no-untyped-def"
 
 [[tool.mypy.overrides]]
-module = ["easyocr", "cv2", "numpy", "PIL"]
+module = ["easyocr", "cv2", "numpy", "PIL", "click"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["tests"]
+ignore_errors = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

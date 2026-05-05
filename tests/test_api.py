@@ -4,7 +4,6 @@ Tests the high-level extract_text() and extract_text_batch()
 functions exported from vision_text_engine.__init__.
 """
 
-
 from unittest.mock import MagicMock, patch
 
 from vision_text_engine.core.models import BatchResult, OCRResult

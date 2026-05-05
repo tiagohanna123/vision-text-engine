@@ -91,4 +91,5 @@ class TestMainFunction:
     def test_main_importable(self):
         """main() pode ser importada."""
         import inspect
+
         assert inspect.isfunction(main)

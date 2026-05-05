@@ -55,16 +55,22 @@ def create_cli() -> "click.Group | None":
         )
 
         if json_output:
-            print(json.dumps({
-                "file": result.file_path,
-                "success": result.success,
-                "text": result.text,
-                "raw_texts": result.raw_texts,
-                "filtered_texts": result.filtered_texts,
-                "error": result.error,
-                "ocr_time_sec": round(result.ocr_time, 3),
-                "total_time_sec": round(result.total_time, 3),
-            }, ensure_ascii=False, indent=2))
+            print(
+                json.dumps(
+                    {
+                        "file": result.file_path,
+                        "success": result.success,
+                        "text": result.text,
+                        "raw_texts": result.raw_texts,
+                        "filtered_texts": result.filtered_texts,
+                        "error": result.error,
+                        "ocr_time_sec": round(result.ocr_time, 3),
+                        "total_time_sec": round(result.total_time, 3),
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
         elif raw:
             print(result.raw_text)
         elif handles:
@@ -112,26 +118,34 @@ def create_cli() -> "click.Group | None":
         )
 
         if json_output:
-            print(json.dumps({
-                "total": batch_result.total_images,
-                "successful": batch_result.successful,
-                "failed": batch_result.failed,
-                "success_rate": round(batch_result.success_rate, 1),
-                "total_time_sec": round(batch_result.total_time, 3),
-                "results": [
+            print(
+                json.dumps(
                     {
-                        "file": r.file_path,
-                        "success": r.success,
-                        "text": r.text,
-                        "error": r.error,
-                    }
-                    for r in batch_result.results
-                ],
-            }, ensure_ascii=False, indent=2))
+                        "total": batch_result.total_images,
+                        "successful": batch_result.successful,
+                        "failed": batch_result.failed,
+                        "success_rate": round(batch_result.success_rate, 1),
+                        "total_time_sec": round(batch_result.total_time, 3),
+                        "results": [
+                            {
+                                "file": r.file_path,
+                                "success": r.success,
+                                "text": r.text,
+                                "error": r.error,
+                            }
+                            for r in batch_result.results
+                        ],
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
         else:
-            print(f"\n✅ {batch_result.successful}/{batch_result.total_images} "
-                  f"({batch_result.success_rate:.0f}%) | "
-                  f"⏱  {batch_result.total_time:.1f}s")
+            print(
+                f"\n✅ {batch_result.successful}/{batch_result.total_images} "
+                f"({batch_result.success_rate:.0f}%) | "
+                f"⏱  {batch_result.total_time:.1f}s"
+            )
             for r in batch_result.results[:5]:
                 status = "✅" if r.success else "❌"
                 preview = r.text[:80].replace("\n", " | ") if r.text else r.error or "vazio"
@@ -156,7 +170,7 @@ def create_cli() -> "click.Group | None":
     return cli
 
 
-def main():
+def main() -> None:
     """Entry point para a CLI."""
     cli = create_cli()
     if cli is None:

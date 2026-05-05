@@ -12,31 +12,76 @@ import re
 
 from ..core.models import FilterRule
 
+# Protocolos de URL (para _matches_rule)
+URL_PROTOCOLS = ("http://", "https://")
+
 # Palavras de exclusão comuns (UI text, noise)
 EXCLUDE_KEYWORDS = {
-    "seguir", "seguindo", "seguidores", "publicações", "posts",
-    "perfil", "editar", "compartilhar", "denunciar", "silenciar",
-    "mensagem", "pesquisar", "configurações", "voltar", "fechar",
-    "cancelar", "salvar", "excluir", "bloquear", "ver perfil",
-    "mencionou", "marcou", "curtir", "comentar", "enviar",
-    "instagram", "twitter", "facebook", "whatsapp", "telegram",
-    "settings", "profile", "edit", "share", "report", "mute",
-    "message", "search", "back", "close", "cancel", "save",
-    "delete", "block", "view profile", "mention", "like",
-    "comment", "send", "follow", "following", "followers",
+    "seguir",
+    "seguindo",
+    "seguidores",
+    "publicações",
+    "posts",
+    "perfil",
+    "editar",
+    "compartilhar",
+    "denunciar",
+    "silenciar",
+    "mensagem",
+    "pesquisar",
+    "configurações",
+    "voltar",
+    "fechar",
+    "cancelar",
+    "salvar",
+    "excluir",
+    "bloquear",
+    "ver perfil",
+    "mencionou",
+    "marcou",
+    "curtir",
+    "comentar",
+    "enviar",
+    "instagram",
+    "twitter",
+    "facebook",
+    "whatsapp",
+    "telegram",
+    "settings",
+    "profile",
+    "edit",
+    "share",
+    "report",
+    "mute",
+    "message",
+    "search",
+    "back",
+    "close",
+    "cancel",
+    "save",
+    "delete",
+    "block",
+    "view profile",
+    "mention",
+    "like",
+    "comment",
+    "send",
+    "follow",
+    "following",
+    "followers",
     "publications",
 }
 
 # Padrões de exclusão
 EXCLUDE_PATTERNS = [
-    r"^\d{1,2}:\d{2}",           # Horários (22:30)
-    r"^\d{1,2}h\d{2}",           # Horários (22h30)
-    r"^[A-Za-z]{1,2}\.$",        # Iniciais (J.)
-    r"^[-–—]\s",  # noqa: RUF001 — en/em dash intentional in regex
-    r"^\d+[°º]",                 # Graus/números ordinais
-    r"^(sim|não|talvez|ok)$",    # Respostas curtas
-    r"^(yes|no|maybe|ok)$",      # Respostas curtas EN
-    r"^\d{4}-\d{2}-\d{2}",       # Datas
+    r"^\d{1,2}:\d{2}",  # Horários (22:30)
+    r"^\d{1,2}h\d{2}",  # Horários (22h30)
+    r"^[A-Za-z]{1,2}\.$",  # Iniciais (J.)
+    r"^[-–—]\s",  # noqa: RUF001
+    r"^\d+[°º]",  # Graus/números ordinais
+    r"^(sim|não|talvez|ok)$",  # Respostas curtas
+    r"^(yes|no|maybe|ok)$",  # Respostas curtas EN
+    r"^\d{4}-\d{2}-\d{2}",  # Datas
     r"^(há|atrás|ontem|hoje|amanhã)$",  # Tempo relativo
 ]
 
@@ -49,14 +94,12 @@ def default_filter_rules() -> list[FilterRule]:
             min_length=3,
             max_length=50,
             require_at_symbol=True,
-            require_handle_format=True,
             exclude_keywords=list(EXCLUDE_KEYWORDS),
         ),
         FilterRule(
             name="hashtags",
-            min_length=3,
+            min_length=2,
             max_length=100,
-            require_prefix="#",
             exclude_keywords=list(EXCLUDE_KEYWORDS),
         ),
         FilterRule(
@@ -68,12 +111,16 @@ def default_filter_rules() -> list[FilterRule]:
         ),
         FilterRule(
             name="urls",
-            min_length=10,
+            min_length=5,
             max_length=2000,
-            require_prefix="http",
             exclude_keywords=list(EXCLUDE_KEYWORDS),
         ),
     ]
+
+
+def _matches_url_protocol(text: str) -> bool:
+    """Verifica se o texto começa com um protocolo de URL."""
+    return text.lower().startswith(URL_PROTOCOLS)
 
 
 def smart_filter(
@@ -124,7 +171,7 @@ def smart_filter(
                 matched = True
                 break
 
-        # Se não match em nenhuma regra, mas passou noise, incluir
+        # Se não match em nenhuma regra, incluir
         if not matched:
             filtered.append(text)
 
@@ -132,10 +179,7 @@ def smart_filter(
 
 
 def _matches_exclude_pattern(text: str) -> bool:
-    for pattern in EXCLUDE_PATTERNS:
-        if re.match(pattern, text):
-            return True
-    return False  # noqa: SIM110 — explicit loop clearer for regex patterns
+    return any(re.match(pattern, text) for pattern in EXCLUDE_PATTERNS)
 
 
 def _matches_rule(text: str, rule: FilterRule) -> bool:
@@ -150,8 +194,12 @@ def _matches_rule(text: str, rule: FilterRule) -> bool:
     if rule.require_at_symbol and "@" not in text:
         return False
 
+    # URL rules: must start with http:// or https://
+    if rule.name == "urls" and not _matches_url_protocol(text):
+        return False
+
     # Handle format (@user)
-    if rule.require_handle_format and not re.match(r"^@?[\w.]{2,30}$", text):
+    if rule.require_handle_format and not re.match(r"^@?[a-zA-Z0-9._]{2,30}$", text):
         return False
 
     # Exclude keywords
@@ -159,24 +207,12 @@ def _matches_rule(text: str, rule: FilterRule) -> bool:
         if kw.lower() in text_lower:
             return False
 
-    # Require prefix
-    if rule.require_prefix is not None and not text_lower.startswith(rule.require_prefix):
-        return False
-
     # Exclude patterns
-    for pat in rule.exclude_patterns:
-        if re.search(pat, text_lower):
-            return False
-    return True  # noqa: SIM110 — explicit loop clearer for regex patterns
-    return True
+    return all(not re.search(pat, text_lower) for pat in rule.exclude_patterns)
 
 
 def _is_noise(text: str) -> bool:
     """Verifica se texto é ruído (UI elements, etc)."""
-    # Muito longo (provavelmente lixo OCR)
-    if len(text) > 100:
-        return True
-
     # Números de telefone completos
     if re.match(r"^\+?\d{10,15}$", text):
         return True
@@ -193,13 +229,15 @@ def _is_noise(text: str) -> bool:
     if len(text) <= 2:
         return True
 
-    return False
+    # Muito longo (não parece texto útil)
+    return len(text) > 150
 
 
 def extract_handles(texts: list[str]) -> list[str]:
     """Extrai apenas @handles de uma lista de textos."""
     handles = set()
     for text in texts:
+        # Suporta caracteres acentuados e Unicode
         found = re.findall(r"@([\w.]{1,30})", text)
         for handle in found:
             if len(handle) >= 2:
@@ -231,7 +269,7 @@ def extract_emails(texts: list[str]) -> list[str]:
 def extract_urls(texts: list[str]) -> list[str]:
     """Extrai URLs de uma lista de textos."""
     urls = set()
-    pattern = r"https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+[-\w/?#&%=~.;,:@]"
+    pattern = r"https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+(?:/[-\w./?#&%=~;,:@]*)*"
     for text in texts:
         found = re.findall(pattern, text)
         urls.update(found)

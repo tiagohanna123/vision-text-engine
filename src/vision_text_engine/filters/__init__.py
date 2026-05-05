@@ -1,4 +1,5 @@
 """Filtros inteligentes para texto extraído."""
+
 from .smart_filter import (
     default_filter_rules,
     extract_emails,

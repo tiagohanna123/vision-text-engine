@@ -8,19 +8,22 @@ múltiplos backends e fallback automático.
 import os
 import time
 from collections.abc import Callable
+from typing import Any
 
 from .models import BatchResult, ImagePreprocessingConfig, OCRResult
 
 try:
     import easyocr
+
     _HAS_EASYOCR = True
-except ImportError:
+except (ImportError, RuntimeError):
     _HAS_EASYOCR = False
 
 try:
     import cv2  # noqa: F401 — imported to detect availability (try/except pattern)
+
     _HAS_CV2 = True
-except ImportError:
+except (ImportError, RuntimeError):
     _HAS_CV2 = False
 
 
@@ -40,8 +43,8 @@ class VisionEngine:
         self,
         lang: list[str] | None = None,
         gpu: bool = False,
-        preprocessor: Callable | None = None,
-        filter_fn: Callable | None = None,
+        preprocessor: Callable[..., Any] | None = None,
+        filter_fn: Callable[..., Any] | None = None,
         model_storage_directory: str | None = None,
         download_enabled: bool = True,
     ):
@@ -54,15 +57,13 @@ class VisionEngine:
         self._reader: easyocr.Reader | None = None
         self._initialized = False
 
-    def _ensure_reader(self):
+    def _ensure_reader(self) -> None:
         """Inicializa o reader EasyOCR (lazy load)."""
         if self._reader is not None:
             return
         if not _HAS_EASYOCR:
-            raise RuntimeError(
-                "EasyOCR não está instalado. Execute: pip install easyocr"
-            )
-        kwargs = {"gpu": self.gpu}
+            raise RuntimeError("EasyOCR não está instalado. Execute: pip install easyocr")
+        kwargs: dict[str, object] = {"gpu": self.gpu}
         if self._model_storage:
             kwargs["model_storage_directory"] = self._model_storage
         if not self._download_enabled:
@@ -114,6 +115,7 @@ class VisionEngine:
                 img = self._preprocessor(image_path, prep_config)
             elif preprocess and _HAS_CV2:
                 from ..preprocessing.pipeline import preprocess_image
+
                 img = preprocess_image(image_path, prep_config)
             else:
                 img = image_path
@@ -126,9 +128,8 @@ class VisionEngine:
         # OCR
         t_ocr = time.time()
         try:
-            raw = self._reader.readtext(
-                img, detail=detail, paragraph=paragraph
-            )
+            assert self._reader is not None
+            raw = self._reader.readtext(img, detail=detail, paragraph=paragraph)
             result.ocr_time = time.time() - t_ocr
         except Exception as e:
             result.error = f"Erro no OCR: {e}"
@@ -180,7 +181,7 @@ class VisionEngine:
 
         for i, path in enumerate(image_paths):
             if show_progress:
-                print(f"[{i+1}/{len(image_paths)}] {os.path.basename(path)}")
+                print(f"[{i + 1}/{len(image_paths)}] {os.path.basename(path)}")
 
             result = self.extract(
                 image_path=path,

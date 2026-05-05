@@ -3,11 +3,10 @@
 Tests preprocess_image() with mocked cv2 and without cv2 (fallback).
 Uses unittest.mock to avoid needing real opencv-python.
 """
-# ruff: noqa: S101 (assert)
 
-import sys
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from vision_text_engine.core.models import ImagePreprocessingConfig
 
@@ -19,6 +18,7 @@ class TestPreprocessImageNoCV2:
         """Without cv2, fallback returns None."""
         with patch("vision_text_engine.preprocessing.pipeline._HAS_CV2", False):
             from vision_text_engine.preprocessing.pipeline import preprocess_image
+
             result = preprocess_image(sample_image_path)
         assert result is None
 
@@ -26,6 +26,7 @@ class TestPreprocessImageNoCV2:
         """Config is accepted but ignored when cv2 unavailable."""
         with patch("vision_text_engine.preprocessing.pipeline._HAS_CV2", False):
             from vision_text_engine.preprocessing.pipeline import preprocess_image
+
             cfg = ImagePreprocessingConfig(sharpen=False)
             result = preprocess_image(sample_image_path, config=cfg)
         assert result is None
